@@ -1,0 +1,31 @@
+{
+  "storyId": "VZN-HI-001",
+  "title": "Verizon Home Internet — End-to-End Order Flow",
+  "flowType": "orderFlow",
+  "targetUrl": "https://www.verizon.com/home/internet/",
+  "description": "As a prospective customer, I want to check service availability at my address, select a Home Internet plan, and complete a new service order so that I can get Verizon Home Internet installed at my home.",
+  "acceptanceCriteria": [
+    "Given I enter a valid residential address in the service availability checker, when I submit the address, then I should see a list of available Home Internet plans (LTE Home, 5G Home, Fios) applicable to that address within 5 seconds",
+    "Given service is not available at the entered address, when I submit the address, then I should see a 'Service not available' message with an option to get notified when service becomes available",
+    "Given available plans are displayed, when I click 'Get this plan' on a plan card, then that plan should be added to my cart and I should be redirected to the checkout flow",
+    "Given I am on the checkout page with a plan in my cart, when I view the order summary, then the plan name, monthly price, equipment fee, and estimated taxes/fees should all be clearly displayed",
+    "Given I complete the checkout form with valid installation address, contact info, and payment details, when I submit the order, then I should receive an order confirmation number and see a success page containing 'Your order has been placed'",
+    "Given I apply a valid promotional code during checkout, when I click 'Apply', then the discount amount should be reflected in the order total",
+    "Given I apply an invalid or expired promotional code, when I click 'Apply', then an error message 'Invalid promo code' should be displayed and the total should remain unchanged",
+    "Given I enter credit card details with an incorrect CVV, when I submit the order, then payment should be declined and an error 'Payment declined — please check your card details' should be shown",
+    "Given I select the self-install equipment option, when I complete the order, then the confirmation should indicate self-install equipment will be shipped within 3-5 business days",
+    "Given I opt in to Auto Pay during checkout, when the order is confirmed, then the confirmation page should display 'Auto Pay enrolled' or equivalent confirmation"
+  ],
+  "testData": {
+    "validAddress":    { "street": "123 Main St", "city": "Anywhere", "state": "NJ", "zip": "07001" },
+    "noServiceAddr":   { "street": "999 Nowhere Ln", "city": "Outback", "state": "MT", "zip": "59001" },
+    "validCard":       { "number": "4111111111111111", "expiry": "12/28", "cvv": "123", "name": "Test User" },
+    "declinedCard":    { "number": "4000000000000002", "expiry": "12/28", "cvv": "123", "name": "Test User" },
+    "badCvvCard":      { "number": "4111111111111111", "expiry": "12/28", "cvv": "999", "name": "Test User" },
+    "validPromoCode":  "SAVE20",
+    "invalidPromoCode":"EXPIRED99",
+    "contactEmail":    "testuser@example.com",
+    "contactPhone":    "2015550100"
+  },
+  "notes": "Use synthetic test data only. Never use real customer addresses, credit card numbers, or personal information in test execution. For Verizon staging environment, use the test account credentials stored in .env as VZN_TEST_USER and VZN_TEST_PASS."
+}

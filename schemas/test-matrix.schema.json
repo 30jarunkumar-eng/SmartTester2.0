@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Test Matrix",
+  "type": "object",
+  "required": ["version", "sourceType", "requestId", "generatedAt", "testCases"],
+  "properties": {
+    "version":      { "type": "integer", "minimum": 1 },
+    "sourceType":   { "type": "string", "enum": ["capture", "jira", "update"] },
+    "flowType":     { "type": "string", "enum": ["orderFlow", "accountManagement", "loginFlow", "serviceCheck", "generic"] },
+    "requestId":    { "type": "string" },
+    "storyId":      { "type": "string" },
+    "targetUrl":    { "type": "string" },
+    "objective":    { "type": "string" },
+    "generatedAt":  { "type": "string" },
+    "testCases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/testCase" }
+    }
+  },
+  "definitions": {
+    "testCase": {
+      "type": "object",
+      "required": ["id", "title", "type", "steps", "assertions"],
+      "properties": {
+        "id":              { "type": "string" },
+        "jiraAC":          { "type": "string" },
+        "title":           { "type": "string" },
+        "type":            { "type": "string", "enum": ["positive", "negative", "boundary", "edge"] },
+        "priority":        { "type": "string", "enum": ["high", "medium", "low"] },
+        "sessionRequired": { "type": "boolean", "default": false },
+        "dependsOn":       { "type": ["string", "null"] },
+        "tags":            { "type": "array", "items": { "type": "string" } },
+        "steps":           { "type": "array", "items": { "$ref": "#/definitions/step" } },
+        "assertions":      { "type": "array", "items": { "$ref": "#/definitions/assertion" } }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["action"],
+      "properties": {
+        "action":            { "type": "string" },
+        "selector":          { "type": ["string", "null"] },
+        "value":             { "type": ["string", "null"] },
+        "waitFor":           { "type": ["string", "null"] },
+        "timeout":           { "type": ["integer", "null"] },
+        "fallbackSelectors": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "assertion": {
+      "type": "object",
+      "required": ["type", "expected"],
+      "properties": {
+        "type":     { "type": "string" },
+        "target":   { "type": ["string", "null"] },
+        "expected": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "storyId": "QA-101",
+  "title": "User login validation",
+  "targetUrl": "https://the-internet.herokuapp.com/login",
+  "description": "As a registered user, I want to log in to the application using my username and password so that I can access the secure area.",
+  "acceptanceCriteria": [
+    "Given valid credentials (tomsmith / SuperSecretPassword!), when I submit the login form, then I should be redirected to /secure and see a success flash message containing 'You logged into a secure area'",
+    "Given invalid credentials, when I submit the login form, then I should stay on /login and see an error flash message containing 'Your username is invalid' or 'Your password is invalid'",
+    "Given empty username and password fields, when I submit the login form, then I should see validation feedback and not be redirected",
+    "Given a valid username but wrong password, when I submit, then I should see a password-specific error message",
+    "Given SQL injection in the username field (e.g. ' OR 1=1 --), the application should not crash and should return an error message"
+  ],
+  "notes": "Test site: https://the-internet.herokuapp.com/login — username: tomsmith, password: SuperSecretPassword!"
+}

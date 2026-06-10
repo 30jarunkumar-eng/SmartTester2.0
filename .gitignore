@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Environment — NEVER commit real keys
+.env
+
+# Run artifacts (generated at runtime)
+work/runs/
+work/security-scan-result.json
+
+# Playwright artifacts
+playwright-report/
+test-results/
+
+# Screenshots and media
+*.png
+*.webm
+*.zip
+*.mp4
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Accidentally created directory from initial clone
+{orchestrator,agents,schemas,templates,examples

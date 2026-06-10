@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Capture Package",
+  "type": "object",
+  "required": ["requestId", "mode", "targetUrl", "capturedAt", "overallConfidence"],
+  "properties": {
+    "requestId":          { "type": "string" },
+    "mode":               { "type": "string", "enum": ["record", "scrape"] },
+    "targetUrl":          { "type": "string" },
+    "objective":          { "type": "string" },
+    "pageTitle":          { "type": "string" },
+    "capturedAt":         { "type": "string" },
+    "overallConfidence":  { "type": "number", "minimum": 0, "maximum": 1 },
+    "recordedActions":    { "type": "array", "items": { "$ref": "#/definitions/action" } },
+    "pageElements":       { "type": "object" },
+    "screenshots":        { "type": "array" },
+    "replayVerification": { "type": "object" },
+    "generatedScript":    { "type": "string" },
+    "generatedScriptPath":{ "type": "string" }
+  },
+  "definitions": {
+    "action": {
+      "type": "object",
+      "required": ["step", "action"],
+      "properties": {
+        "step":           { "type": "integer" },
+        "action":         { "type": "string" },
+        "selectors":      { "type": "array" },
+        "value":          { "type": "string" },
+        "url":            { "type": "string" },
+        "confidence":     { "type": "number" },
+        "timestamp":      { "type": "number" },
+        "screenshot":     { "type": "string" },
+        "replayStatus":   { "type": "string" },
+        "healingApplied": { "type": "boolean" }
+      }
+    }
+  }
+}

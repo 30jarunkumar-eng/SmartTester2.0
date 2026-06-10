@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Execution Report",
+  "type": "object",
+  "required": ["runId", "targetUrl", "startedAt", "completedAt", "summary", "results"],
+  "properties": {
+    "runId":          { "type": "string" },
+    "matrixId":       { "type": "string" },
+    "targetUrl":      { "type": "string" },
+    "flowType":       { "type": "string" },
+    "startedAt":      { "type": "string" },
+    "completedAt":    { "type": "string" },
+    "environment":    { "type": "object" },
+    "htmlReportPath": { "type": "string" },
+    "summary": {
+      "type": "object",
+      "required": ["total", "passed", "failed", "skipped"],
+      "properties": {
+        "total":   { "type": "integer" },
+        "passed":  { "type": "integer" },
+        "failed":  { "type": "integer" },
+        "skipped": { "type": "integer" }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/result" }
+    },
+    "aiSummary": { "type": "string" }
+  },
+  "definitions": {
+    "result": {
+      "type": "object",
+      "required": ["testCaseId", "title", "status", "durationMs"],
+      "properties": {
+        "testCaseId":       { "type": "string" },
+        "title":            { "type": "string" },
+        "type":             { "type": "string" },
+        "status":           { "type": "string", "enum": ["pass", "fail", "skip"] },
+        "durationMs":       { "type": "integer" },
+        "retryCount":       { "type": "integer", "default": 0 },
+        "steps":            { "type": "array" },
+        "assertions":       { "type": "array" },
+        "screenshots":      { "type": "array" },
+        "networkRequests":  { "type": "array" },
+        "error":            { "type": ["string", "null"] },
+        "failedStep":       { "type": ["integer", "null"] },
+        "failedSelector":   { "type": ["string", "null"] }
+      }
+    }
+  }
+}

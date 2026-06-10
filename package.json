@@ -1,0 +1,29 @@
+{
+  "name": "qa-multi-agent",
+  "version": "1.0.0",
+  "description": "Multi-Agent QA Testing Framework with headed browser recording, OpenAI test design, and Playwright execution",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run.js --url https://the-internet.herokuapp.com/login --mode record",
+    "scrape": "node run.js --url https://the-internet.herokuapp.com/login --mode scrape",
+    "jira": "node run.js --jira examples/internet-login/jira-story.json",
+    "update": "node run.js --update-matrix --from-failures work/execution-report.json",
+    "validate:json": "node tools/validate-json.js",
+    "security:scan": "node tools/security-scan.js",
+    "test": "npx playwright test",
+    "test:report": "npx playwright show-report"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.44.0",
+    "ajv": "^8.13.0",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "openai": "^4.47.1",
+    "ora": "^5.4.1",
+    "uuid": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

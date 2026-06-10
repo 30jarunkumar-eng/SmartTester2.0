@@ -1,0 +1,32 @@
+{
+  "storyId": "VZN-AM-001",
+  "title": "Verizon My Account — Account Management Flows",
+  "flowType": "accountManagement",
+  "targetUrl": "https://www.verizon.com/home/myverizon/",
+  "description": "As an existing Verizon Home Internet customer, I want to log in to My Verizon and manage my account — view my bill, make a payment, change my plan, and manage enrolled services — so that I can stay in control of my subscription without needing to call support.",
+  "acceptanceCriteria": [
+    "Given a valid My Verizon username and password, when I submit the login form, then I should be redirected to the account dashboard showing my account number, current plan name, and next bill date",
+    "Given an invalid password, when I submit the login form, then I should see 'The user ID or password you entered is incorrect' and remain on the login page",
+    "Given 5 consecutive failed login attempts, when the 6th attempt is made, then the account should be temporarily locked and a 'Too many attempts — account locked' message should be displayed",
+    "Given I am logged in and on the billing page, when I click 'View current bill', then the current billing statement should display the plan charge, any add-on charges, taxes, and the total amount due",
+    "Given I am on the billing page, when I enter valid bank account details and click 'Make a payment', then the payment should be processed and a confirmation 'Payment of $XX.XX received' should be displayed",
+    "Given I am on the plan management page, when I click 'Upgrade plan', then I should see a list of available upgrade options with pricing differences clearly shown",
+    "Given I select an upgrade plan and confirm, when the upgrade is processed, then I should see 'Your plan has been updated' and the new plan name should appear in the account summary",
+    "Given I am on the services page, when I click 'Add Verizon Home Shield' or similar add-on service, then I should be taken through an add-on enrollment flow ending in confirmation",
+    "Given I am logged in, when I navigate to Profile & Settings and change my contact email to a new valid email, then the change should be saved and a confirmation 'Email address updated' should be shown",
+    "Given I click the Sign Out button, when the logout completes, then I should be redirected to the login page and attempting to access a protected page should redirect back to login"
+  ],
+  "testData": {
+    "validCredentials":   { "username": "testuser@example.com", "password": "***REDACTED***" },
+    "invalidPassword":    { "username": "testuser@example.com", "password": "***REDACTED***", "_note": "Use a known-wrong password from env: VZN_WRONG_PASS" },
+    "invalidUsername":    { "username": "nouser@example.com",   "password": "***REDACTED***", "_note": "Non-existent account scenario" },
+    "paymentBankAccount": { "routingNumber": "021000021", "accountNumber": "TEST123456789" },
+    "newEmail":           "updated-test@example.com"
+  },
+  "sessionFlow": {
+    "description": "Test cases in this story require session continuity. tc-001 (login) must pass before session-dependent cases can run.",
+    "loginTestId": "tc-001",
+    "sessionDependentIds": ["tc-003", "tc-004", "tc-005", "tc-006", "tc-007", "tc-008", "tc-009", "tc-010"]
+  },
+  "notes": "All test cases that require login should have sessionRequired: true and dependsOn: 'tc-001'. Use --session flag when running to persist the authenticated session across test cases. Never use real customer credentials."
+}
