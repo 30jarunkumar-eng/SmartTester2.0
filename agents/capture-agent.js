@@ -318,8 +318,9 @@ class CaptureAgent {
   // ── HEADLESS SCRAPE ───────────────────────────────────────────────────────
   async _runScrapeMode() {
     this.log.info('Launching headless browser...');
-    const browser = await chromium.launch({ headless: true });
-    const page    = await browser.newPage();
+    const browser  = await chromium.launch({ headless: true });
+    const context  = await browser.newContext();
+    const page     = await context.newPage();
 
     context.on('response', async (res) => {
       try {
@@ -328,8 +329,9 @@ class CaptureAgent {
       } catch (_) {}
     });
 
-    await page.goto(this.url, { waitUntil: 'networkidle' });
+    await page.goto(this.url, { waitUntil: 'networkidle', timeout: 30000 });
 
+    fs.mkdirSync(path.join(this.runDir, 'screenshots'), { recursive: true });
     const ssPath      = path.join(this.runDir, 'screenshots', 'step-0-initial.png');
     await page.screenshot({ path: ssPath, fullPage: true });
 
@@ -337,8 +339,10 @@ class CaptureAgent {
     const pageElements = await this._extractPageElements(page);
     const autoActions  = this._autoGenerateActions(pageElements);
 
-    await browser.close();
+    try { await context.close(); } catch (_) {}
+    try { await browser.close(); } catch (_) {}
 
+    this.log.success(`Scrape complete. ${autoActions.length} actions auto-generated.`);
     return {
       requestId:         this.runId,
       mode:              'scrape',
@@ -349,7 +353,8 @@ class CaptureAgent {
       overallConfidence: 0.88,
       recordedActions:   autoActions,
       pageElements,
-      screenshots:       [{ step: 0, path: ssPath, label: 'initial' }]
+      screenshots:       [{ step: 0, path: ssPath, label: 'initial' }],
+      networkRequests:   this.networkLog
     };
   }
 

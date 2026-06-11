@@ -317,16 +317,27 @@ class ExecutionAgent {
 
     try {
       switch (assertion.type) {
-        case 'urlContains':
+        case 'urlContains': {
+          // LLMs sometimes put the fragment in `target` with expected="true",
+          // and sometimes put it directly in `expected`. Handle both.
+          const fragment = (assertion.expected === 'true' || !assertion.expected)
+            ? assertion.target
+            : assertion.expected;
           r.actual = page.url();
-          r.passed = page.url().includes(assertion.expected);
+          r.passed = fragment ? page.url().includes(fragment) : false;
           break;
+        }
 
         case 'textVisible':
         case 'textContains': {
+          // LLMs sometimes put the visible text in `target` with expected="true",
+          // and sometimes put it directly in `expected`. Handle both.
+          const needle = (assertion.expected === 'true' || !assertion.expected)
+            ? assertion.target
+            : assertion.expected;
           const body = await page.textContent('body').catch(() => '');
           r.actual   = body.slice(0, 300);
-          r.passed   = body.includes(assertion.expected);
+          r.passed   = needle ? body.includes(needle) : false;
           break;
         }
 
